@@ -1,0 +1,125 @@
+@charset "utf-8";
+
+@import "bourbon";
+@import "base/base";   /* Bitters needs to be imported before Neat */
+@import "neat";
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.order {
+  border: $base-border;
+  border-radius: 3px;
+  margin: 10px;
+  font-size: 0.9em;
+
+  table {
+    margin: 0;
+
+    > tbody > tr > td,
+    > tbody > tr > th,
+    > thead > tr > th {
+      padding: 10px;
+    }
+
+    > tbody > tr:last-child > th {
+      border: none;
+    }
+  }
+}
+
+.order-button {
+  margin: 10px;
+
+  > button {
+    width: 100%;
+  }
+}
+
+.product-list {
+  @include outer-container;
+  padding: 10px;
+}
+
+.product-item {
+  @include span-columns(6);
+  @include omega(2n);
+}
+
+.product-item__body {
+  border: $base-border;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  padding: 1em;
+  text-align: center;
+}
+
+$bar-height: 44px;
+
+.top-bar {
+  height: $bar-height;
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 20;
+  padding-right: 10px;
+  padding-left: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.top-bar__action, .top-bar > h1 {
+  padding: 0;
+  line-height: $bar-height;
+  white-space: nowrap;
+  float: left;
+  width: 50%;
+  display: block;
+}
+
+.top-bar__action {
+  text-align: right;
+}
+
+.navbar {
+  @include clearfix;
+  border-bottom: 1px solid #ddd;
+  padding-top: $bar-height;
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  background-color: #fff;
+
+  > li {
+    border-left: 1px solid #ddd;
+    text-align: center;
+    width: 50%;
+    float: left;
+
+    &:first-child {
+      border-left: none;
+    }
+
+    > a {
+      line-height: $bar-height;
+      display: block;
+    }
+  }
+}
+
+.content {
+  padding-top: 2 * $bar-height;
+  overflow: auto;
+  background-color: #fff;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
+}

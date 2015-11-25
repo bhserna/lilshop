@@ -98,41 +98,96 @@ shopProducts = [
   { id: "e5", name: "Tostitos", price: 30.00 }
 ]
 
-window.App =
-  init: ->
-    @nav = ShopNavigation.init()
-    @shop = Shop.new(shopProducts)
+Actions =
+  navTo: (path, fun) ->
+    $(document).on "click", "[data-nav=#{path}]", fun
 
-  render: ($el) ->
-    $el.html @renderHtml(@nav, @shop)
+  onAction: (type, name, fun) ->
+    $(document).on type, "[data-action=#{name}]", (event) ->
+      fun(event, $(this))
 
-  renderHtml: (nav, shop) -> """
+{navTo, onAction} = Actions
+
+navTo "products", ->
+  App.currentMain = "products"
+  App.render()
+
+navTo "currentOrder", ->
+  App.currentMain = "currentOrder"
+  App.render()
+
+onAction "click", "add-item", (event, $el) ->
+  productId = $el.data("id")
+  App.shop = Shop.addToOrder(App.shop, productId)
+  App.render()
+
+Html =
+  render: (currentMain, shop) -> """
   <div class="top-bar">
     <h1>Granito Divino</h1>
     <a class="top-bar__action" href="#">Ordenes de hoy</a>
   </div>
 
   <ul class="navbar">
-    <li><a href="#">Productos</a>
-    <li><a href="#">Orden - $#{shop.currentOrder.total}</a>
+    <li><a href="#" data-nav="products">Productos</a>
+    <li><a href="#" data-nav="currentOrder">Orden - $#{shop.currentOrder.total}</a>
   </ul>
 
   <div class="content">
-    #{@contentHtml(nav, shop)}
+    #{@content(currentMain, shop)}
   </div>
   """
 
-  contentHtml: (nav, shop) ->
-    this["#{nav.currentMain}PageHtml"](shop)
+  renderMany: (collection, template) ->
+    (template(item) for item in collection).join ""
 
-  productsPageHtml: (shop) -> """
+  content: (currentMain, shop) ->
+    pageName = "#{currentMain}Page"
+    unless pageName of this
+      throw "NoPageError: Page with name #{pageName} is not defined"
+    this[pageName](shop)
+
+  productsPage: (shop) -> """
   <div class="product-list">
-    #{(@productItemHtml(product) for product in shop.products).join ""}
+    #{@renderMany shop.products, @productItem}
   </div>
   """
 
-  productItemHtml: (product) -> """
-  <div class="product-item">
+  currentOrderPage: (shop) -> """
+  <div class="order">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th class="text-center">Cantidad</th>
+          <th class="text-center">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        #{@renderMany shop.currentOrder.items, @orderItem}
+      </tbody>
+    </table>
+  </div>
+
+  #{if _.isEmpty(shop.currentOrder.items) then "" else @captureOrderButton()}
+  """
+
+  captureOrderButton: -> """
+  <div class="order-button">
+    <button>Capturar</button>
+  </div>
+  """
+
+  orderItem: (item) -> """
+  <tr>
+    <td>#{item.name}</td>
+    <td class="text-center">#{item.count}</td>
+    <td class="text-center">$#{item.total}</td>
+  </tr>
+  """
+
+  productItem: (product) -> """
+  <div class="product-item" data-action="add-item" data-id=#{product.id}>
     <div class="product-item__body">
       <h1>#{product.name}</h1>
       <span>$#{product.price}</span>
@@ -140,6 +195,14 @@ window.App =
   </div>
   """
 
+window.App =
+  init: (@$el) ->
+    @currentMain = "products"
+    @shop = Shop.new(shopProducts)
+
+  render: ->
+    @$el.html Html.render(@currentMain, @shop)
+
 $ ->
-  App.init()
-  App.render $("body")
+  App.init $("body")
+  App.render()

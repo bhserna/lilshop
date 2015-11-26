@@ -14,19 +14,7 @@
     <%= javascript_include_tag  "all" %>
   </head>
 
-  <body>
-    <div class="top-bar">
-      <h1>Granito Divino</h1>
-      <%= link_to "Ordenes de hoy", "/ordenes.html" , class: "top-bar__action" %>
-    </div>
-
-    <ul class="navbar">
-      <li><%= link_to "Productos", "/" %></li>
-      <li><%= link_to "Orden - $0.00", "/order.html" %></li>
-    </ul>
-
-    <div class="content">
-      <%= yield %>
-    </div>
+  <body class="js-app">
+    <%= yield %>
   </body>
 </html>

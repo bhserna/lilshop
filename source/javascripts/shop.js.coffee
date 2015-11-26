@@ -1,3 +1,9 @@
+# require html
+
+Dict =
+  update: (object, props) ->
+    _.extend {}, object, props
+
 Item =
   haveSameProduct: (item1, item2) ->
     item1.productId is item2.productId
@@ -22,7 +28,7 @@ Item =
       total: item.price * count
 
   update: (item, props) ->
-    _.extend {}, item, props
+    Dict.update item, props
 
 Products =
   findWithId: (products, id) ->
@@ -60,35 +66,35 @@ Order =
     item = Item.decrementCount(item)
     if item.count is 0 then @removeItem(order, item) else @insertItem(order, item)
 
-window.ShopNavigation =
-  init: ->
-    currentMain: "products"
-
-  goToCurrentOrder: (nav) ->
-    currentMain: "currentOrder"
-
-  goToTodayOrders: (nav) ->
-    currentMain: "todayOrders"
-
 window.Shop =
-  new: (products, order) ->
+  new: (products, order, currentPage) ->
     products: products
     currentOrder: order or Order.new()
+    currentPage: currentPage or "products"
+
+  changePage: (shop, page) ->
+    @update shop, currentPage: page
 
   addToOrder: (shop, productId) ->
     product = Products.findWithId(shop.products, productId)
     order = Order.addItem(shop.currentOrder, product)
-    @new(shop.products, order)
+    @updateCurrentOrder(shop, order)
 
   incrementCountInOrder: (shop, productId) ->
     product = Products.findWithId(shop.products, productId)
     order = Order.incrementCount(shop.currentOrder, product)
-    @new(shop.products, order)
+    @updateCurrentOrder(shop, order)
 
   decrementCountInOrder: (shop, productId) ->
     product = Products.findWithId(shop.products, productId)
     order = Order.decrementCount(shop.currentOrder, product)
-    @new(shop.products, order)
+    @updateCurrentOrder(shop, order)
+
+  updateCurrentOrder: (shop, order) ->
+    @update shop, currentOrder: order
+
+  update: (shop, props) ->
+    Dict.update(shop, props)
 
 shopProducts = [
   { id: "e1", name: "Elote chico", price: 15.00 },
@@ -98,102 +104,18 @@ shopProducts = [
   { id: "e5", name: "Tostitos", price: 30.00 }
 ]
 
-Actions =
-  navTo: (path, fun) ->
-    $(document).on "click", "[data-nav=#{path}]", fun
-
-  onAction: (type, name, fun) ->
-    $(document).on type, "[data-action=#{name}]", (event) ->
-      fun(event, $(this))
-
 {navTo, onAction} = Actions
 
 navTo "products", ->
-  App.currentMain = "products"
-  App.render()
+  App.navigateTo "products"
 
 navTo "currentOrder", ->
-  App.currentMain = "currentOrder"
-  App.render()
+  App.navigateTo "currentOrder"
 
-onAction "click", "add-item", (event, $el) ->
+onAction "click", "addItem", (event, $el) ->
   productId = $el.data("id")
   App.shop = Shop.addToOrder(App.shop, productId)
   App.render()
-
-Html =
-  render: (currentMain, shop) -> """
-  <div class="top-bar">
-    <h1>Granito Divino</h1>
-    <a class="top-bar__action" href="#">Ordenes de hoy</a>
-  </div>
-
-  <ul class="navbar">
-    <li><a href="#" data-nav="products">Productos</a>
-    <li><a href="#" data-nav="currentOrder">Orden - $#{shop.currentOrder.total}</a>
-  </ul>
-
-  <div class="content">
-    #{@content(currentMain, shop)}
-  </div>
-  """
-
-  renderMany: (collection, template) ->
-    (template(item) for item in collection).join ""
-
-  content: (currentMain, shop) ->
-    pageName = "#{currentMain}Page"
-    unless pageName of this
-      throw "NoPageError: Page with name #{pageName} is not defined"
-    this[pageName](shop)
-
-  productsPage: (shop) -> """
-  <div class="product-list">
-    #{@renderMany shop.products, @productItem}
-  </div>
-  """
-
-  currentOrderPage: (shop) -> """
-  <div class="order">
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th class="text-center">Cantidad</th>
-          <th class="text-center">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        #{@renderMany shop.currentOrder.items, @orderItem}
-      </tbody>
-    </table>
-  </div>
-
-  #{if _.isEmpty(shop.currentOrder.items) then "" else @captureOrderButton()}
-  """
-
-  captureOrderButton: -> """
-  <div class="order-button">
-    <button>Capturar</button>
-  </div>
-  """
-
-  orderItem: (item) -> """
-  <tr>
-    <td>#{item.name}</td>
-    <td class="text-center">#{item.count}</td>
-    <td class="text-center">$#{item.total}</td>
-  </tr>
-  """
-
-  productItem: (product) -> """
-  <div class="product-item" data-action="add-item" data-id=#{product.id}>
-    <div class="product-item__body">
-      <h1>#{product.name}</h1>
-      <span>$#{product.price}</span>
-    </div>
-  </div>
-  """
 
 window.App =
   init: (@$el) ->
@@ -203,6 +125,10 @@ window.App =
   render: ->
     @$el.html Html.render(@currentMain, @shop)
 
+  navigateTo: (page) ->
+    @currentMain = page
+    @render()
+
 $ ->
-  App.init $("body")
+  App.init $(".js-app")
   App.render()

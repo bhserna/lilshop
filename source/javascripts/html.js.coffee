@@ -17,13 +17,20 @@ window.Html =
   renderUnless: (condition, renderable) ->
     if condition then "" else renderable()
 
-window.Actions =
-  navTo: (path, fun) ->
-    $(document).on "click", "[data-nav=#{path}]", fun
+window.App =
+  init: (@$el, @shop) ->
 
+  render: ->
+    @$el.html Html.render(@shop)
+
+  update: (shop) ->
+    @shop = shop
+    @render()
+
+window.Actions =
   onAction: (type, name, fun) ->
     $(document).on type, "[data-action=#{name}]", (event) ->
-      fun(event, $(this))
+      fun App.shop, $(this)
 
 {renderMain, renderMany, renderIf, renderUnless} = Html
 
@@ -35,8 +42,16 @@ Templates =
     </div>
 
     <ul class="navbar">
-      <li><a href="#" data-nav="products">Productos</a>
-      <li><a href="#" data-nav="currentOrder">Orden - $#{shop.currentOrder.total}</a>
+      <li>
+        <a href="#" data-action="navigateTo" data-page="products">
+          Productos
+        </a>
+      </li>
+      <li>
+        <a href="#" data-action="navigateTo" data-page="currentOrder">
+          Orden - $#{shop.currentOrder.total}
+        </a>
+      </li>
     </ul>
 
     <div class="content">

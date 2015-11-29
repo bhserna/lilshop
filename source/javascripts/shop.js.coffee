@@ -104,40 +104,24 @@ shopProducts = [
   { id: "e5", name: "Tostitos", price: 30.00 }
 ]
 
-{navTo, onAction} = Actions
+{onAction} = Actions
 
-navTo "products", ->
-  App.navigateTo "products"
+onAction "click", "navigateTo", (shop, $el) ->
+  page = $el.data("page")
+  App.update Shop.changePage(shop, page)
 
-navTo "currentOrder", ->
-  App.navigateTo "currentOrder"
-
-onAction "click", "addItem", (event, $el) ->
+onAction "click", "addItem", (shop, $el) ->
   productId = $el.data("id")
-  App.shop = Shop.addToOrder(App.shop, productId)
-  App.render()
+  App.update Shop.addToOrder(shop, productId)
 
-onAction "click", "incrementCount", (event, $el) ->
+onAction "click", "incrementCount", (shop, $el) ->
   productId = $el.data("id")
-  App.shop = Shop.incrementCountInOrder(App.shop, productId)
-  App.render()
+  App.update Shop.incrementCountInOrder(shop, productId)
 
-onAction "click", "decrementCount", (event, $el) ->
+onAction "click", "decrementCount", (shop, $el) ->
   productId = $el.data("id")
-  App.shop = Shop.decrementCountInOrder(App.shop, productId)
-  App.render()
-
-window.App =
-  init: (@$el) ->
-    @shop = Shop.new(shopProducts)
-
-  render: ->
-    @$el.html Html.render(@shop)
-
-  navigateTo: (page) ->
-    @shop = Shop.changePage(@shop, page)
-    @render()
+  App.update Shop.decrementCountInOrder(shop, productId)
 
 $ ->
-  App.init $(".js-app")
+  App.init $(".js-app"), Shop.new(shopProducts)
   App.render()

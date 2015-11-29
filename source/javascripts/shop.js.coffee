@@ -117,16 +117,25 @@ onAction "click", "addItem", (event, $el) ->
   App.shop = Shop.addToOrder(App.shop, productId)
   App.render()
 
+onAction "click", "incrementCount", (event, $el) ->
+  productId = $el.data("id")
+  App.shop = Shop.incrementCountInOrder(App.shop, productId)
+  App.render()
+
+onAction "click", "decrementCount", (event, $el) ->
+  productId = $el.data("id")
+  App.shop = Shop.decrementCountInOrder(App.shop, productId)
+  App.render()
+
 window.App =
   init: (@$el) ->
-    @currentMain = "products"
     @shop = Shop.new(shopProducts)
 
   render: ->
-    @$el.html Html.render(@currentMain, @shop)
+    @$el.html Html.render(@shop)
 
   navigateTo: (page) ->
-    @currentMain = page
+    @shop = Shop.changePage(@shop, page)
     @render()
 
 $ ->

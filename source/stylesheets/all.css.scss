@@ -13,6 +13,10 @@ html, body {
   text-align: center;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .order {
   border: $base-border;
   border-radius: 3px;
@@ -34,11 +38,36 @@ html, body {
   }
 }
 
-.order-button {
+.order__count-column {
+  text-align: center;
+  width: 10em;
+}
+
+.order__total-column {
+  text-align: right;
+}
+
+.order__item-count {
+  display: inline-block;
+  width: 2em;
+}
+
+.order__buttons {
   margin: 10px;
 
   > button {
-    width: 100%;
+    display: inline-block;
+    width: 49%;
+  }
+}
+
+.order__cancel-button {
+  background-color: #cccccc;
+
+  &:hover,
+  &:focus {
+    background-color: darken(#cccccc, 15%);
+    color: #fff;
   }
 }
 

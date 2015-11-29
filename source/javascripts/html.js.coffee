@@ -1,15 +1,21 @@
 window.Html =
-  render: (currentMain, shop) ->
-    Templates.application(currentMain, shop)
+  render: (shop) ->
+    Templates.application(shop)
 
   renderMany: (collection, template) ->
     (template(item) for item in collection).join ""
 
-  renderMain: (currentMain, shop) ->
-    pageName = "#{currentMain}Page"
+  renderMain: (shop) ->
+    pageName = "#{shop.currentPage}Page"
     unless pageName of Templates
       throw "NoPageError: Page with name #{pageName} is not defined"
     Templates[pageName](shop)
+
+  renderIf: (condition, renderable) ->
+    if condition then renderable() else ""
+
+  renderUnless: (condition, renderable) ->
+    if condition then "" else renderable()
 
 window.Actions =
   navTo: (path, fun) ->
@@ -19,10 +25,10 @@ window.Actions =
     $(document).on type, "[data-action=#{name}]", (event) ->
       fun(event, $(this))
 
-{renderMain, renderMany} = Html
+{renderMain, renderMany, renderIf, renderUnless} = Html
 
 Templates =
-  application: (currentMain, shop) -> """
+  application: (shop) -> """
     <div class="top-bar">
       <h1>Granito Divino</h1>
       <a class="top-bar__action" href="#">Ordenes de hoy</a>
@@ -34,7 +40,7 @@ Templates =
     </ul>
 
     <div class="content">
-      #{renderMain(currentMain, shop)}
+      #{renderMain(shop)}
     </div>
   """
   productsPage: (shop) -> """
@@ -48,31 +54,50 @@ Templates =
       <table>
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th class="text-center">Cantidad</th>
-            <th class="text-center">Total</th>
+            <th></th>
+            <th class="order__count-column">Cantidad</th>
+            <th class="order__total-column">Total</th>
           </tr>
         </thead>
         <tbody>
           #{renderMany shop.currentOrder.items, @orderItem}
+
+          <tr>
+            <td></td>
+            <td class="order__count-column"><strong>Total:</strong></td>
+            <td class="order__total-column">$#{shop.currentOrder.total}</td>
+          </tr>
+
+          #{renderUnless _.isEmpty(shop.currentOrder.items), @captureOrderButton}
         </tbody>
       </table>
     </div>
-
-    #{if _.isEmpty(shop.currentOrder.items) then "" else @captureOrderButton()}
   """
 
   captureOrderButton: -> """
-    <div class="order-button">
-      <button>Capturar</button>
-    </div>
+    <tr>
+      <td colspan="3" class="text-center">
+        <div class="order__buttons">
+          <button class="order__cancel-button">Cancelar</button>
+          <button>Capturar</button>
+        </div>
+      </td>
+    </tr>
   """
 
   orderItem: (item) -> """
     <tr>
       <td>#{item.name}</td>
-      <td class="text-center">#{item.count}</td>
-      <td class="text-center">$#{item.total}</td>
+      <td class="order__count-column">
+        <button data-action="decrementCount" data-id="#{item.productId}">
+          <span class="fa fa-minus"></span>
+        </button>
+        <span class="order__item-count">#{item.count}</span>
+        <button data-action="incrementCount" data-id="#{item.productId}">
+          <span class="fa fa-plus"></span>
+        </button>
+      </td>
+      <td class="order__total-column">$#{item.total}</td>
     </tr>
   """
 

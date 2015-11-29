@@ -27,6 +27,9 @@ Item =
       count: count
       total: item.price * count
 
+  sort: (items) ->
+    _.sortBy items, "productId"
+
   update: (item, props) ->
     Dict.update item, props
 
@@ -37,7 +40,7 @@ Products =
 
 Order =
   new: (items) ->
-    items: items or []
+    items: Item.sort(items) or []
     total: _.reduce items, ((acc, item) -> acc + item.total), 0
 
   findItem: (order, productId) ->

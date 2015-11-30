@@ -14,6 +14,7 @@ gem "wdm", "~> 0.1.0", :platforms => [:mswin, :mingw]
 gem "tzinfo-data", platforms: [:mswin, :mingw, :jruby]
 gem "middleman-jasmine"
 gem "jquery-middleman"
+gem 'middleman-deploy', '~> 0.3.0'
 
 gem 'bitters'
 gem 'bourbon'

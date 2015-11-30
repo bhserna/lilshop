@@ -4,6 +4,17 @@ Dict =
   update: (object, props) ->
     _.extend {}, object, props
 
+window.Time =
+  now: -> moment().format()
+  utc: -> moment.utc().format()
+
+LocalStore =
+ save: (state) ->
+   localStorage.shop = JSON.stringify(state)
+
+ load: ->
+   JSON.parse(localStorage.shop || "{}")
+
 Item =
   haveSameProduct: (item1, item2) ->
     item1.productId is item2.productId
@@ -39,9 +50,18 @@ Products =
       return product
 
 Order =
-  new: (items) ->
-    items: Item.sort(items) or []
+  new: (items = [], options = {}) ->
+    items: Item.sort(items)
     total: _.reduce items, ((acc, item) -> acc + item.total), 0
+    canBeCaptured: _.some(items)
+    isFlashed: options.isFlashed or false
+    capturedAt: options.capturedAt or null
+
+  flashTotal: (order) ->
+    @new(order.items, isFlashed: true)
+
+  resetFlashes: (order) ->
+    @new(order.items, isFlashed: false)
 
   findItem: (order, productId) ->
     _.findWhere order.items, productId: productId
@@ -69,14 +89,21 @@ Order =
     item = Item.decrementCount(item)
     if item.count is 0 then @removeItem(order, item) else @insertItem(order, item)
 
+  capture: (order) ->
+    @new(order.items, capturedAt: Time.now())
+
 window.Shop =
   new: (products, order, currentPage) ->
     products: products
     currentOrder: order or Order.new()
+    capturedOrders: []
     currentPage: currentPage or "products"
 
   changePage: (shop, page) ->
     @update shop, currentPage: page
+
+  cancelOrder: (shop) ->
+    @updateCurrentOrder shop, Order.new()
 
   addToOrder: (shop, productId) ->
     product = Products.findWithId(shop.products, productId)
@@ -93,10 +120,19 @@ window.Shop =
     order = Order.decrementCount(shop.currentOrder, product)
     @updateCurrentOrder(shop, order)
 
+  captureOrder: (shop) ->
+    order = Order.capture(shop.currentOrder)
+    shop = @update shop, capturedOrders: shop.capturedOrders.concat(order)
+    @updateCurrentOrder shop, Order.new()
+
   updateCurrentOrder: (shop, order) ->
-    @update shop, currentOrder: order
+    @update shop, currentOrder: Order.flashTotal(order)
 
   update: (shop, props) ->
+    unless props.currentOrder
+      order = Order.resetFlashes(shop.currentOrder)
+      props = Dict.update(props, currentOrder: order)
+
     Dict.update(shop, props)
 
 shopProducts = [
@@ -111,20 +147,36 @@ shopProducts = [
 
 onAction "click", "navigateTo", (shop, $el) ->
   page = $el.data("page")
-  App.update Shop.changePage(shop, page)
+  updateState Shop.changePage(shop, page)
 
 onAction "click", "addItem", (shop, $el) ->
   productId = $el.data("id")
-  App.update Shop.addToOrder(shop, productId)
+  updateState Shop.addToOrder(shop, productId)
 
 onAction "click", "incrementCount", (shop, $el) ->
   productId = $el.data("id")
-  App.update Shop.incrementCountInOrder(shop, productId)
+  updateState Shop.incrementCountInOrder(shop, productId)
 
 onAction "click", "decrementCount", (shop, $el) ->
   productId = $el.data("id")
-  App.update Shop.decrementCountInOrder(shop, productId)
+  updateState Shop.decrementCountInOrder(shop, productId)
+
+onAction "click", "cancelOrder", (shop) ->
+  updateState Shop.cancelOrder(shop)
+
+onAction "click", "captureOrder", (shop) ->
+  updateState Shop.captureOrder(shop)
+
+updateState = (shop) ->
+  App.update(shop)
+  LocalStore.save(shop)
+
+loadState = ->
+  if _.isEmpty shop = LocalStore.load()
+    Shop.new(shopProducts)
+  else
+    shop
 
 $ ->
-  App.init $(".js-app"), Shop.new(shopProducts)
+  App.init $(".js-app"), loadState()
   App.render()

@@ -38,7 +38,9 @@ Templates =
   application: (shop) -> """
     <div class="top-bar">
       <h1>Granito Divino</h1>
-      <a class="top-bar__action" href="#">Ordenes de hoy</a>
+      <a class="top-bar__action" data-action="navigateTo" data-page="capturedOrders">
+        Ordenes capturadas
+      </a>
     </div>
 
     <ul class="navbar">
@@ -48,7 +50,10 @@ Templates =
         </a>
       </li>
       <li>
-        <a href="#" data-action="navigateTo" data-page="currentOrder">
+        <a href="#"
+          #{"class='flashy'" if shop.currentOrder.isFlashed}}
+          data-action="navigateTo"
+          data-page="currentOrder">
           Orden - $#{shop.currentOrder.total}
         </a>
       </li>
@@ -64,12 +69,25 @@ Templates =
     </div>
   """
 
+  capturedOrdersPage: (shop) -> """
+    <ul>
+      #{renderMany shop.capturedOrders, @capturedOrder}
+    </ul>
+  """
+
+  capturedOrder: (order) -> """
+    <li>
+      <strong>#{moment(order.capturedAt).format("ddd, hA")}:</strong>
+      <span>$#{order.total}</strong>
+    </li>
+  """
+
   currentOrderPage: (shop) -> """
     <div class="order">
       <table>
         <thead>
           <tr>
-            <th></th>
+            <th>Producto</th>
             <th class="order__count-column">Cantidad</th>
             <th class="order__total-column">Total</th>
           </tr>
@@ -80,21 +98,27 @@ Templates =
           <tr>
             <td></td>
             <td class="order__count-column"><strong>Total:</strong></td>
-            <td class="order__total-column">$#{shop.currentOrder.total}</td>
+            <td class="order__total-column #{"flashy" if shop.currentOrder.isFlashed}">
+              $#{shop.currentOrder.total}
+            </td>
           </tr>
 
-          #{renderUnless _.isEmpty(shop.currentOrder.items), @captureOrderButton}
+          #{renderIf shop.currentOrder.canBeCaptured, @orderButtons}
         </tbody>
       </table>
     </div>
   """
 
-  captureOrderButton: -> """
+  orderButtons: -> """
     <tr>
       <td colspan="3" class="text-center">
         <div class="order__buttons">
-          <button class="order__cancel-button">Cancelar</button>
-          <button>Capturar</button>
+          <button class="order__cancel-button" data-action="cancelOrder">
+            Cancelar
+          </button>
+          <button data-action="captureOrder">
+            Capturar
+          </button>
         </div>
       </td>
     </tr>

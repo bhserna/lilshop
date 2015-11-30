@@ -145,6 +145,18 @@ $bar-height: 44px;
   }
 }
 
+.flashy {
+  @include animation-name(flashy);
+  @include animation-duration(2s);
+  @include animation-timing-function(ease);
+  @include animation-iteration-count(1);
+}
+
+@include keyframes(flashy) {
+  from { background-color: #FFFFCB; }
+  to { background-color: none; }
+}
+
 .content {
   padding-top: 2 * $bar-height;
   overflow: auto;

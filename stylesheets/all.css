@@ -305,7 +305,8 @@ html, body {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 48.82117%; }
+  width: 48.82117%;
+  color: black; }
   /* line 89, /Users/bhserna/.rvm/gems/ruby-2.1.2/gems/neat-1.7.2/app/assets/stylesheets/grid/_span-columns.scss */
   .product-item:last-child {
     margin-right: 0; }
@@ -315,8 +316,11 @@ html, body {
   /* line 83, /Users/bhserna/.rvm/gems/ruby-2.1.2/gems/neat-1.7.2/app/assets/stylesheets/grid/_omega.scss */
   .product-item:nth-child(2n+1) {
     clear: left; }
+  /* line 84, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+  .product-item:active {
+    color: black; }
 
-/* line 84, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 89, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .product-item__body {
   border: 1px solid #ddd;
   border-radius: 3px;
@@ -324,7 +328,12 @@ html, body {
   padding: 1em;
   text-align: center; }
 
-/* line 94, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 97, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+.product-item:active .product-item__body {
+  border-top-width: 3px;
+  border-left-width: 3px; }
+
+/* line 104, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .top-bar {
   height: 44px;
   position: fixed;
@@ -338,7 +347,7 @@ html, body {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden; }
 
-/* line 108, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 118, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .top-bar__action, .top-bar > h1 {
   padding: 0;
   line-height: 44px;
@@ -347,11 +356,11 @@ html, body {
   width: 50%;
   display: block; }
 
-/* line 117, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 127, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .top-bar__action {
   text-align: right; }
 
-/* line 121, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 131, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .navbar {
   border-bottom: 1px solid #ddd;
   padding-top: 44px;
@@ -365,21 +374,21 @@ html, body {
     clear: both;
     content: "";
     display: table; }
-  /* line 131, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+  /* line 141, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
   .navbar > li {
     border-left: 1px solid #ddd;
     text-align: center;
     width: 50%;
     float: left; }
-    /* line 137, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+    /* line 147, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
     .navbar > li:first-child {
       border-left: none; }
-    /* line 141, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+    /* line 151, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
     .navbar > li > a {
       line-height: 44px;
       display: block; }
 
-/* line 148, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 158, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .flashy {
   -webkit-animation-name: flashy;
   -moz-animation-name: flashy;
@@ -409,7 +418,7 @@ html, body {
     background-color: #FFFFCB; }
   to {
     background-color: none; } }
-/* line 160, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 170, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .content {
   padding-top: 88px;
   overflow: auto;

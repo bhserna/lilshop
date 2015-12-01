@@ -88,7 +88,7 @@
       return "<tr>\n  <td>" + item.name + "</td>\n  <td class=\"order__count-column\">\n    <button data-action=\"decrementCount\" data-id=\"" + item.productId + "\">\n      <span class=\"fa fa-minus\"></span>\n    </button>\n    <span class=\"order__item-count\">" + item.count + "</span>\n    <button data-action=\"incrementCount\" data-id=\"" + item.productId + "\">\n      <span class=\"fa fa-plus\"></span>\n    </button>\n  </td>\n  <td class=\"order__total-column\">$" + item.total + "</td>\n</tr>";
     },
     productItem: function(product) {
-      return "<div class=\"product-item\" data-action=\"addItem\" data-id=" + product.id + ">\n  <div class=\"product-item__body\">\n    <h1>" + product.name + "</h1>\n    <span>$" + product.price + "</span>\n  </div>\n</div>";
+      return "<a class=\"product-item\" data-action=\"addItem\" data-id=" + product.id + ">\n  <div class=\"product-item__body\">\n    <h1>" + product.name + "</h1>\n    <span>$" + product.price + "</span>\n  </div>\n</a>";
     }
   };
 

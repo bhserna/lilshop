@@ -79,6 +79,11 @@ html, body {
 .product-item {
   @include span-columns(6);
   @include omega(2n);
+  color: black;
+
+  &:active {
+    color: black;
+  }
 }
 
 .product-item__body {
@@ -87,6 +92,11 @@ html, body {
   margin-bottom: 5px;
   padding: 1em;
   text-align: center;
+}
+
+.product-item:active .product-item__body {
+  border-top-width: 3px;
+  border-left-width: 3px;
 }
 
 $bar-height: 44px;

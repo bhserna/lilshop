@@ -44,3 +44,23 @@ describe "Capture order", ->
     shop = Shop.captureOrder(shop)
     capturedOrder = _.first shop.capturedOrders
     expect(capturedOrder.capturedAt).toEqual Time.now()
+
+  it "gives the order an id", ->
+    shop = Shop.new(shopProducts)
+    shop = Shop.addToOrder(shop, "e2")
+    shop = Shop.captureOrder(shop)
+    capturedOrder = _.first shop.capturedOrders
+    expect(capturedOrder.id).toEqual 1
+
+  it "increments the id", ->
+    shop = Shop.new(shopProducts)
+
+    shop = Shop.addToOrder(shop, "e2")
+    shop = Shop.captureOrder(shop)
+    capturedOrder = _.first shop.capturedOrders
+    expect(capturedOrder.id).toEqual 1
+
+    shop = Shop.addToOrder(shop, "e1")
+    shop = Shop.captureOrder(shop)
+    capturedOrder = _.first shop.capturedOrders
+    expect(capturedOrder.id).toEqual 2

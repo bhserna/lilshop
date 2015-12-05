@@ -51,6 +51,7 @@ Products =
 
 Order =
   new: (items = [], options = {}) ->
+    id: options.id or null
     items: Item.sort(items)
     total: _.reduce items, ((acc, item) -> acc + item.total), 0
     canBeCaptured: _.some(items)
@@ -89,8 +90,11 @@ Order =
     item = Item.decrementCount(item)
     if item.count is 0 then @removeItem(order, item) else @insertItem(order, item)
 
-  capture: (order) ->
-    @new(order.items, capturedAt: Time.now())
+  capture: (order, nextOrderId) ->
+    @new(order.items, id: nextOrderId, capturedAt: Time.now())
+
+  sort: (orders) ->
+    _.sortBy(orders, "id").reverse()
 
 window.Shop =
   new: (products, order, currentPage) ->
@@ -98,6 +102,7 @@ window.Shop =
     currentOrder: order or Order.new()
     capturedOrders: []
     currentPage: currentPage or "products"
+    nextOrderId: 1
 
   changePage: (shop, page) ->
     @update shop, currentPage: page
@@ -121,9 +126,11 @@ window.Shop =
     @updateCurrentOrder(shop, order)
 
   captureOrder: (shop) ->
-    order = Order.capture(shop.currentOrder)
-    shop = @update shop, capturedOrders: shop.capturedOrders.concat(order)
-    @updateCurrentOrder shop, Order.new()
+    order = Order.capture(shop.currentOrder, shop.nextOrderId)
+    @update shop,
+      nextOrderId: shop.nextOrderId + 1,
+      capturedOrders: Order.sort(shop.capturedOrders.concat(order))
+      currentOrder: Order.new()
 
   updateCurrentOrder: (shop, order) ->
     @update shop, currentOrder: Order.flashTotal(order)

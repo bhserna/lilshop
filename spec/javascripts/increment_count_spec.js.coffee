@@ -68,18 +68,3 @@ describe "Update item count", ->
     shop = Shop.incrementCountInOrder(shop, "e1")
     shop = Shop.decrementCountInOrder(shop, "e1")
     expect(_.map shop.currentOrder.items, (item) -> item.productId).toEqual ["e1", "e2"]
-
-
-    # chuntaro
-    # decache
-    # country roll
-    # ebi crunch
-    #
-    # confetti
-    # sake
-    # makiko
-    # express
-    #
-    # tito
-    #
-    # 446

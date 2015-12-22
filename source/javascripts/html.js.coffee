@@ -141,10 +141,10 @@ Templates =
   """
 
   productItem: (product) -> """
-    <a class="product-item" data-action="addItem" data-id=#{product.id}>
+    <button class="product-item" data-action="addItem" data-id=#{product.id}>
       <div class="product-item__body">
         <h1>#{product.name}</h1>
         <span>$#{product.price}</span>
       </div>
-    </a>
+    </button>
   """

@@ -17,15 +17,6 @@ describe "Shop", ->
     shop = Shop.new(shopProducts)
     expect(shop.currentOrder.total).toEqual 0.00
 
-  it "the order cannot be captured if has no items", ->
-    shop = Shop.new(shopProducts)
-    expect(shop.currentOrder.canBeCaptured).toBeFalsy()
-
-  it "the order can be captured if has the items", ->
-    shop = Shop.new(shopProducts)
-    shop = Shop.addToOrder(shop, "e2")
-    expect(shop.currentOrder.canBeCaptured).toBeTruthy()
-
   it "can recovers the state of the current order", ->
     shop = Shop.new(shopProducts)
     shop = Shop.addToOrder(shop, "e1")

@@ -89,9 +89,13 @@ html, body {
   @include span-columns(6);
   @include omega(2n);
   color: black;
+  background: none;
+  padding: 0;
 
-  &:active {
+  &:active, &:focus, &:hover {
     color: black;
+    background: none;
+    padding: 0;
   }
 }
 

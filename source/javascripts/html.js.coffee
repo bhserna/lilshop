@@ -37,16 +37,16 @@ window.Actions =
 Templates =
   application: (shop) -> """
     <div class="top-bar">
-      <h1>Granito Divino</h1>
-      <a class="top-bar__action" data-action="navigateTo" data-page="capturedOrders">
-        Ordenes capturadas
+      <h1>Lilshop</h1>
+      <a class="top-bar__action" href="#" data-action="navigateTo" data-page="capturedOrders">
+        Captured orders
       </a>
     </div>
 
     <ul class="navbar">
       <li>
         <a href="#" data-action="navigateTo" data-page="products">
-          Productos
+          Products
         </a>
       </li>
       <li>
@@ -54,7 +54,7 @@ Templates =
           #{"class='flashy'" if shop.currentOrder.isFlashed}}
           data-action="navigateTo"
           data-page="currentOrder">
-          Orden - $#{shop.currentOrder.total}
+          Order - $#{shop.currentOrder.total}
         </a>
       </li>
     </ul>
@@ -76,9 +76,9 @@ Templates =
   """
 
   capturedOrder: (order) -> """
-    <li>
-      <strong>#{moment(order.capturedAt).format("ddd, hA")}:</strong>
-      <span>$#{order.total}</strong>
+    <li class="captured-order">
+      <span>#{moment(order.capturedAt).format("ddd, h:mm a")}</span>
+      <strong class="pull-right">$#{order.total}</strong>
     </li>
   """
 

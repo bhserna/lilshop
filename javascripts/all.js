@@ -10414,7 +10414,7 @@ return jQuery;
 
   Templates = {
     application: function(shop) {
-      return "<div class=\"top-bar\">\n  <h1>Granito Divino</h1>\n  <a class=\"top-bar__action\" data-action=\"navigateTo\" data-page=\"capturedOrders\">\n    Ordenes capturadas\n  </a>\n</div>\n\n<ul class=\"navbar\">\n  <li>\n    <a href=\"#\" data-action=\"navigateTo\" data-page=\"products\">\n      Productos\n    </a>\n  </li>\n  <li>\n    <a href=\"#\"\n      " + (shop.currentOrder.isFlashed ? "class='flashy'" : void 0) + "}\n      data-action=\"navigateTo\"\n      data-page=\"currentOrder\">\n      Orden - $" + shop.currentOrder.total + "\n    </a>\n  </li>\n</ul>\n\n<div class=\"content\">\n  " + (renderMain(shop)) + "\n</div>";
+      return "<div class=\"top-bar\">\n  <h1>Lilshop</h1>\n  <a class=\"top-bar__action\" href=\"#\" data-action=\"navigateTo\" data-page=\"capturedOrders\">\n    Captured orders\n  </a>\n</div>\n\n<ul class=\"navbar\">\n  <li>\n    <a href=\"#\" data-action=\"navigateTo\" data-page=\"products\">\n      Products\n    </a>\n  </li>\n  <li>\n    <a href=\"#\"\n      " + (shop.currentOrder.isFlashed ? "class='flashy'" : void 0) + "}\n      data-action=\"navigateTo\"\n      data-page=\"currentOrder\">\n      Order - $" + shop.currentOrder.total + "\n    </a>\n  </li>\n</ul>\n\n<div class=\"content\">\n  " + (renderMain(shop)) + "\n</div>";
     },
     productsPage: function(shop) {
       return "<div class=\"product-list\">\n  " + (renderMany(shop.products, this.productItem)) + "\n</div>";
@@ -10423,7 +10423,7 @@ return jQuery;
       return "<ul>\n  " + (renderMany(shop.capturedOrders, this.capturedOrder)) + "\n</ul>";
     },
     capturedOrder: function(order) {
-      return "<li>\n  <strong>" + (moment(order.capturedAt).format("ddd, hA")) + ":</strong>\n  <span>$" + order.total + "</strong>\n</li>";
+      return "<li class=\"captured-order\">\n  <span>" + (moment(order.capturedAt).format("ddd, h:mm a")) + "</span>\n  <strong class=\"pull-right\">$" + order.total + "</strong>\n</li>";
     },
     currentOrderPage: function(shop) {
       return "<div class=\"order\">\n  <table>\n    <thead>\n      <tr>\n        <th>Producto</th>\n        <th class=\"order__count-column\">Cantidad</th>\n        <th class=\"order__total-column\">Total</th>\n      </tr>\n    </thead>\n    <tbody>\n      " + (renderMany(shop.currentOrder.items, this.orderItem)) + "\n\n      <tr>\n        <td></td>\n        <td class=\"order__count-column\"><strong>Total:</strong></td>\n        <td class=\"order__total-column " + (shop.currentOrder.isFlashed ? "flashy" : void 0) + "\">\n          $" + shop.currentOrder.total + "\n        </td>\n      </tr>\n\n      " + (renderIf(shop.currentOrder.canBeCaptured, this.orderButtons)) + "\n    </tbody>\n  </table>\n</div>";
@@ -10554,6 +10554,7 @@ Song.prototype.persistFavoriteStatus = function(value) {
         options = {};
       }
       return {
+        id: options.id || null,
         items: Item.sort(items),
         total: _.reduce(items, (function(acc, item) {
           return acc + item.total;
@@ -10614,10 +10615,14 @@ Song.prototype.persistFavoriteStatus = function(value) {
         return this.insertItem(order, item);
       }
     },
-    capture: function(order) {
+    capture: function(order, nextOrderId) {
       return this["new"](order.items, {
+        id: nextOrderId,
         capturedAt: Time.now()
       });
+    },
+    sort: function(orders) {
+      return _.sortBy(orders, "id").reverse();
     }
   };
 
@@ -10627,7 +10632,8 @@ Song.prototype.persistFavoriteStatus = function(value) {
         products: products,
         currentOrder: order || Order["new"](),
         capturedOrders: [],
-        currentPage: currentPage || "products"
+        currentPage: currentPage || "products",
+        nextOrderId: 1
       };
     },
     changePage: function(shop, page) {
@@ -10658,11 +10664,12 @@ Song.prototype.persistFavoriteStatus = function(value) {
     },
     captureOrder: function(shop) {
       var order;
-      order = Order.capture(shop.currentOrder);
-      shop = this.update(shop, {
-        capturedOrders: shop.capturedOrders.concat(order)
+      order = Order.capture(shop.currentOrder, shop.nextOrderId);
+      return this.update(shop, {
+        nextOrderId: shop.nextOrderId + 1,
+        capturedOrders: Order.sort(shop.capturedOrders.concat(order)),
+        currentOrder: Order["new"]()
       });
-      return this.updateCurrentOrder(shop, Order["new"]());
     },
     updateCurrentOrder: function(shop, order) {
       return this.update(shop, {

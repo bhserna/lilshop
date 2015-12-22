@@ -83,6 +83,7 @@
         options = {};
       }
       return {
+        id: options.id || null,
         items: Item.sort(items),
         total: _.reduce(items, (function(acc, item) {
           return acc + item.total;
@@ -143,10 +144,14 @@
         return this.insertItem(order, item);
       }
     },
-    capture: function(order) {
+    capture: function(order, nextOrderId) {
       return this["new"](order.items, {
+        id: nextOrderId,
         capturedAt: Time.now()
       });
+    },
+    sort: function(orders) {
+      return _.sortBy(orders, "id").reverse();
     }
   };
 
@@ -156,7 +161,8 @@
         products: products,
         currentOrder: order || Order["new"](),
         capturedOrders: [],
-        currentPage: currentPage || "products"
+        currentPage: currentPage || "products",
+        nextOrderId: 1
       };
     },
     changePage: function(shop, page) {
@@ -187,11 +193,12 @@
     },
     captureOrder: function(shop) {
       var order;
-      order = Order.capture(shop.currentOrder);
-      shop = this.update(shop, {
-        capturedOrders: shop.capturedOrders.concat(order)
+      order = Order.capture(shop.currentOrder, shop.nextOrderId);
+      return this.update(shop, {
+        nextOrderId: shop.nextOrderId + 1,
+        capturedOrders: Order.sort(shop.capturedOrders.concat(order)),
+        currentOrder: Order["new"]()
       });
-      return this.updateCurrentOrder(shop, Order["new"]());
     },
     updateCurrentOrder: function(shop, order) {
       return this.update(shop, {

@@ -8,7 +8,7 @@ button {
   -o-appearance: none;
   appearance: none;
   -webkit-font-smoothing: antialiased;
-  background-color: #477dca;
+  background-color: #8AB4E6;
   border-radius: 3px;
   border: none;
   color: #fff;
@@ -27,7 +27,7 @@ button {
   button:hover, button:focus, input[type="button"]:hover, input[type="button"]:focus, input[type="reset"]:hover, input[type="reset"]:focus, input[type="submit"]:hover, input[type="submit"]:focus,
   button:hover,
   button:focus {
-    background-color: #2c5999;
+    background-color: #4b8cd9;
     color: #fff; }
   /* line 27, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/base/_buttons.scss */
   button:disabled, input[type="button"]:disabled, input[type="reset"]:disabled, input[type="submit"]:disabled,
@@ -85,8 +85,8 @@ textarea {
   input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="email"]:focus, input[type="month"]:focus, input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="time"]:focus, input[type="url"]:focus, input[type="week"]:focus, textarea:focus,
   select[multiple=multiple]:focus,
   textarea:focus {
-    border-color: #477dca;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 5px rgba(55, 112, 192, 0.7);
+    border-color: #8AB4E6;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 5px rgba(117, 167, 226, 0.7);
     outline: none; }
 
 /* line 55, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/base/_forms.scss */
@@ -194,12 +194,12 @@ p {
 
 /* line 26, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/base/_typography.scss */
 a {
-  color: #477dca;
+  color: #8AB4E6;
   text-decoration: none;
   transition: color 0.1s linear; }
   /* line 31, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/base/_typography.scss */
   a:active, a:focus, a:hover {
-    color: #2c5999; }
+    color: #4b8cd9; }
   /* line 37, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/base/_typography.scss */
   a:active, a:focus {
     outline: none; }
@@ -241,54 +241,63 @@ html, body {
   text-align: right; }
 
 /* line 20, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+.pull-right {
+  float: right; }
+
+/* line 24, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+.captured-order {
+  padding: 1em;
+  border-bottom: 1px solid #ddd; }
+
+/* line 29, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .order {
   border: 1px solid #ddd;
   border-radius: 3px;
   margin: 10px;
   font-size: 0.9em; }
-  /* line 26, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+  /* line 35, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
   .order table {
     margin: 0; }
-    /* line 29, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+    /* line 38, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
     .order table > tbody > tr > td,
     .order table > tbody > tr > th,
     .order table > thead > tr > th {
       padding: 10px; }
-    /* line 35, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+    /* line 44, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
     .order table > tbody > tr:last-child > th {
       border: none; }
 
-/* line 41, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 50, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .order__count-column {
   text-align: center;
   width: 10em; }
 
-/* line 46, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 55, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .order__total-column {
   text-align: right; }
 
-/* line 50, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 59, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .order__item-count {
   display: inline-block;
   width: 2em; }
 
-/* line 55, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 64, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .order__buttons {
   margin: 10px; }
-  /* line 58, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+  /* line 67, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
   .order__buttons > button {
     display: inline-block;
     width: 49%; }
 
-/* line 64, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 73, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .order__cancel-button {
   background-color: #cccccc; }
-  /* line 67, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+  /* line 76, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
   .order__cancel-button:hover, .order__cancel-button:focus {
     background-color: #a6a6a6;
     color: #fff; }
 
-/* line 74, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 83, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .product-list {
   max-width: 68em;
   margin-left: auto;
@@ -300,7 +309,7 @@ html, body {
     content: "";
     display: table; }
 
-/* line 79, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 88, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .product-item {
   float: left;
   display: block;
@@ -316,11 +325,11 @@ html, body {
   /* line 83, /Users/bhserna/.rvm/gems/ruby-2.1.2/gems/neat-1.7.2/app/assets/stylesheets/grid/_omega.scss */
   .product-item:nth-child(2n+1) {
     clear: left; }
-  /* line 84, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+  /* line 93, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
   .product-item:active {
     color: black; }
 
-/* line 89, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 98, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .product-item__body {
   border: 1px solid #ddd;
   border-radius: 3px;
@@ -328,12 +337,12 @@ html, body {
   padding: 1em;
   text-align: center; }
 
-/* line 97, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 106, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .product-item:active .product-item__body {
   border-top-width: 3px;
   border-left-width: 3px; }
 
-/* line 104, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 113, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .top-bar {
   height: 44px;
   position: fixed;
@@ -342,12 +351,12 @@ html, body {
   z-index: 20;
   padding-right: 10px;
   padding-left: 10px;
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
+  color: #ffffff;
+  background-color: #8AB4E6;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden; }
 
-/* line 118, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 127, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .top-bar__action, .top-bar > h1 {
   padding: 0;
   line-height: 44px;
@@ -356,39 +365,44 @@ html, body {
   width: 50%;
   display: block; }
 
-/* line 127, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
-.top-bar__action {
-  text-align: right; }
+/* line 136, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+.top-bar > h1 {
+  color: #2B41AA; }
 
-/* line 131, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 140, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+.top-bar__action {
+  text-align: right;
+  color: #fff; }
+
+/* line 145, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .navbar {
-  border-bottom: 1px solid #ddd;
   padding-top: 44px;
   position: fixed;
   right: 0;
   left: 0;
   z-index: 10;
-  background-color: #fff; }
+  background-color: #8AB4E6;
+  box-shadow: 0px 1px 5px gray; }
   /* line 20, /Users/bhserna/.rvm/gems/ruby-2.1.2/gems/bourbon-4.2.3/app/assets/stylesheets/addons/_clearfix.scss */
   .navbar::after {
     clear: both;
     content: "";
     display: table; }
-  /* line 141, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+  /* line 155, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
   .navbar > li {
-    border-left: 1px solid #ddd;
     text-align: center;
     width: 50%;
     float: left; }
-    /* line 147, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+    /* line 160, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
     .navbar > li:first-child {
       border-left: none; }
-    /* line 151, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+    /* line 164, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
     .navbar > li > a {
       line-height: 44px;
-      display: block; }
+      display: block;
+      color: #fff; }
 
-/* line 158, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 172, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .flashy {
   -webkit-animation-name: flashy;
   -moz-animation-name: flashy;
@@ -405,20 +419,20 @@ html, body {
 
 @-webkit-keyframes flashy {
   from {
-    background-color: #FFFFCB; }
+    background-color: #B1C4F0; }
   to {
     background-color: none; } }
 @-moz-keyframes flashy {
   from {
-    background-color: #FFFFCB; }
+    background-color: #B1C4F0; }
   to {
     background-color: none; } }
 @keyframes flashy {
   from {
-    background-color: #FFFFCB; }
+    background-color: #B1C4F0; }
   to {
     background-color: none; } }
-/* line 170, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
+/* line 184, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
 .content {
   padding-top: 88px;
   overflow: auto;

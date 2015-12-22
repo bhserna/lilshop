@@ -328,7 +328,7 @@ html, body {
   .product-item:nth-child(2n+1) {
     clear: left; }
   /* line 95, /Users/bhserna/ruby_projects/lilshop/source/stylesheets/all.css.scss */
-  .product-item:active, .product-item:focus {
+  .product-item:active, .product-item:focus, .product-item:hover {
     color: black;
     background: none;
     padding: 0; }

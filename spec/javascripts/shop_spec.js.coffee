@@ -28,7 +28,7 @@ describe "Shop", ->
     ]
 
     newShop = Shop.new(shopProducts, shop.currentOrder)
-    expect(shop.currentOrder.total).toEqual 35.00
+    expect(newShop.currentOrder.total).toEqual 35.00
     expect(newShop.currentOrder.items).toEqual [
       { productId: "e1", name: "elote chico", count: 1, price: 15.00, total: 15.00 }
       { productId: "e2", name: "elote mediano", count: 1, price: 20.00, total: 20.00 }
